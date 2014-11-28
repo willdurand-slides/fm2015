@@ -1,44 +1,51 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Domain-Driven Model Inference Applied To Web Applications | William Durand</title>
+        <meta charset="utf-8">
+
+        <title>Inferring models with rule-based expert systems | William Durand</title>
+
         <link rel="stylesheet" href="reveal.js/css/reveal.min.css">
         <link rel="stylesheet" href="reveal.js/css/theme/simple.css" id="theme">
+
         <link rel="stylesheet" href="reveal.js/lib/css/zenburn.css">
+
         <link rel="stylesheet" href="font-awesome/css/font-awesome.min.css">
         <link rel="stylesheet" href="css/fix-fontawesome-reveal-js.css">
+
         <link rel="stylesheet" href="css/custom.css">
+
         <script>
-            document.write('<link rel="stylesheet" href="reveal.js/css/print/' +
-                (window.location.search.match(/print-pdf/gi) ? 'pdf' : 'paper') +
-                '.css" type="text/css" media="print">'
-            );
+            if (window.location.search.match(/print-pdf/gi)) {
+                document.write('<link rel="stylesheet" href="css/pdf.css" type="text/css">');
+            }
         </script>
+
+        <!--[if lt IE 9]>
+        <script src="reveal.js/lib/js/html5shiv.js"></script>
+        <![endif]-->
     </head>
     <body>
         <div class="reveal">
             <div class="slides">
                 <section>
-                    <h1 class="title">Domain-Driven Model Inference Applied To Web Applications</h1>
-                    <em class="subtitle">Sébastien Salva, <u>William Durand</u> &mdash; July 22, 2014 / SERP'14</em>
+                    <h1 class="title">Inferring Models With<br>Rule-Based Expert Systems</h1>
+                    <em class="subtitle">Sébastien Salva, <u>William Durand</u> &mdash; December 5, 2014 / SoICT'14</em>
 
                     <p class="sponsors">
-                        <img src="images/worldcomp.png" class="no-border" />
                         <img src="images/limos.png" class="no-border" />
                         <img src="images/blaisepascal.png" class="no-border" />
                         <img src="images/michelin.jpg" class="no-border" />
                     </p>
                 </section>
 
-                <section data-background="images/chaine-des-puys.jpg">
-                    <img src="images/renaud-lavillenie.jpg" class="fragment lavillenie" />
-                    <img src="images/michelin-hq.jpg" class="fragment michelin-hq" />
-                </section>
+                <section data-background="images/chaine-des-puys.jpg"></section>
 
                 <section>
                     <section data-markdown>
                         <script type="text/template">
                             ## Context
+                            <br>
 
                             * 100+ applications running in production
                             * Not (fully) covered by tests
@@ -118,6 +125,7 @@
                     <section data-markdown>
                         <script type="text/template">
                             ## Rules
+                            <br>
 
                             * a rule can only be applied a limited number of times on the same knowledge base
                             * the inference rules are Modus Ponens
@@ -130,6 +138,7 @@
                     <section data-markdown>
                         <script type="text/template">
                             ## Layer 1: Trace Filtering
+                            <br>
 
                             1. Cleaning-up the trace set given as input, removing
                             **noise**, <br>a.k.a. **irrelevant** traces
@@ -145,6 +154,7 @@
                     <section data-markdown>
                         <script type="text/template">
                             ## Structured HTTP Traces
+                            <br>
 
                             <p class="left">
                                 Let&nbsp;&nbsp;`t = req`<sub>`1`</sub>`, resp`<sub>`1`</sub>`, ..., req`<sub>`n`</sub>`, resp`<sub>`n`</sub>&nbsp;&nbsp;
@@ -185,6 +195,7 @@
                     <section data-markdown>
                         <script type="text/template">
                             ## Layer 2: Transformation Of The Traces Into IOSTSs
+                            <br>
 
                             1. Translating a structured trace set `ST` into a run set `SR`
                             2. Deriving a first IOSTS <code>&delta;1</code> from `SR`
@@ -207,6 +218,7 @@
                     <section data-markdown>
                         <script type="text/template">
                             ## Layers 3-N: IOSTS Abstraction
+                            <br>
 
                             Composed of rules that emulate the ability of a
                             human expert<br>to **simplify transitions**, to **analyze
@@ -222,13 +234,12 @@
                     <section data-markdown>
                         <script type="text/template">
                             ## Layer 3
+                            <br>
 
                             Layer 3 contains **low level**, **generic rules**
                             that<br>can be reused against different applications.
 
                             <br>
-
-                            #### Example
 
                                 rule "Identify Login Page"
                                 when
@@ -244,6 +255,7 @@
                     <section data-markdown>
                         <script type="text/template">
                             ## Layer 3 - Example
+                            <br>
 
                             <img src="images/gh-2-2.png" class="no-border" />
                         </script>
@@ -251,13 +263,12 @@
                     <section data-markdown>
                         <script type="text/template">
                             ## Layer 4
+                            <br>
 
                             Layer 4 allows to infer a more abstract
                             model<br>composed of **more expressive actions**.
 
                             <br>
-
-                            #### Example
 
                                 rule "Identify Authentication"
                                 when
@@ -279,6 +290,7 @@
                     <section data-markdown>
                         <script type="text/template">
                             ## Layer 4 - Example
+                            <br>
 
                             <img src="images/gh-2-3.png" class="no-border" />
                         </script>
@@ -286,6 +298,7 @@
                     <section data-markdown>
                         <script type="text/template">
                             ## Need More?
+                            <br>
 
                             <img src="images/gh-2-4.png" class="no-border" />
                         </script>
@@ -301,6 +314,7 @@
                     <section data-markdown>
                         <script type="text/template">
                             ## Cons
+                            <br>
 
                             * Writing (and maintaining) rules is harder than expected
                             * Preserving `traces(M) = ST` is not easy
@@ -309,6 +323,7 @@
                     <section data-markdown>
                         <script type="text/template">
                             ## Pros
+                            <br>
 
                             * Original approach to derive IOSTS models
                             * It Works™
@@ -320,10 +335,10 @@
                     <section data-markdown>
                         <script type="text/template">
                             ## Future Work
+                            <br>
 
                             * Applying such a framework on industrial systems (WIP)
                             * Generating test cases for regression testing
-                            * Finding a better way to write rules
                         </script>
                     </section>
                 </section>
@@ -337,18 +352,12 @@
                 </section>
             </div>
         </div>
-        <script src="reveal.js/lib/js/head.min.js"></script>
-        <script src="reveal.js/js/reveal.min.js"></script>
-        <script>
+        <script type="text/javascript" src="reveal.js/lib/js/head.min.js"></script>
+        <script type="text/javascript" src="reveal.js/js/reveal.min.js"></script>
+        <script type="text/javascript">
             Reveal.initialize({
-                controls: true,
-                progress: true,
+                slideNumber: !window.location.search.match(/print-pdf/gi),
                 history: true,
-                center: true,
-                slideNumber: true,
-
-                touch: true,
-                hideAddressBar: true,
 
                 theme: Reveal.getQueryHash().theme,
                 transition: Reveal.getQueryHash().transition || 'concave',
@@ -357,9 +366,10 @@
                     { src: 'reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
                     { src: 'reveal.js/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
                     { src: 'reveal.js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
-                    { src: 'reveal.js/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+                    { src: 'js/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
                 ]
             });
         </script>
+
     </body>
 </html>
