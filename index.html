@@ -44,13 +44,15 @@
                 <section>
                     <section data-markdown>
                         <script type="text/template">
-                            ## Context
-                            <br>
-
-                            * 100+ applications running in production
+                            ## Background @ Michelin
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            * 100+ applications running in **production**
                             * Not (fully) covered by tests
-                            * Documentation may be outdated
-                            * MUST be maintained!
+                            * Documentation most likely outdated
+                            * MUST be maintained for ~20 years!
                         </script>
                     </section>
                     <section data-markdown>
@@ -61,19 +63,26 @@
                     </section>
                     <section data-markdown>
                         <script type="text/template">
-                            A first classic solution is to express these
-                            behaviours with formal models, e.g.  **I**nput
+                            A first classic solution to express these
+                            behaviours is to **model** them, e.g.  **I**nput
                             **O**utput **S**ymbolic **T**ransition **S**ystems.
 
+                            <br>
+                            <p class="fragment">But writing such models is an **heavy task** and **error prone**.</p>
+                            <br>
                             <p class="fragment">
-                                <br>
-                                But writing such models is an **heavy task** and **error prone**.
+                                <em><i class="fa fa-arrow-right"></i> Not suitable for Michelin engineers.</em>
                             </p>
                         </script>
                     </section>
                     <section data-markdown>
                         <script type="text/template">
                             Hence the need for a **model inference approach**.
+
+                            <br>
+                            <p class="fragment">
+                                <em><i class="fa fa-arrow-right"></i> If we cannot write such models, let's build them.</em>
+                            </p>
                         </script>
                     </section>
                 </section>
@@ -96,7 +105,7 @@
 
                             <p class="fragment">
                                 <br>
-                                <i class="fa fa-lightbulb"></i> What about doing the same, **programmatically**?
+                                <i class="fa fa-lightbulb-o"></i> What about doing the same, **programmatically**?
                             </p>
                         </script>
                     </section>
@@ -124,12 +133,12 @@
                     </section>
                     <section data-markdown>
                         <script type="text/template">
-                            ## Rules
+                            ## Hypotheses On The Rules
                             <br>
 
-                            * a rule can only be applied a limited number of times on the same knowledge base
-                            * the inference rules are Modus Ponens
-                            * no implicit knowledge elimination
+                            * A rule can only be applied a limited number of times on the same knowledge base
+                            * The inference rules are Modus Ponens
+                            * No implicit knowledge elimination
                         </script>
                     </section>
                 </section>
@@ -140,10 +149,8 @@
                             ## Layer 1: Trace Filtering
                             <br>
 
-                            1. Cleaning-up the trace set given as input, removing
-                            **noise**, <br>a.k.a. **irrelevant** traces
+                            1. Cleaning-up the trace set given as input, removing **noise**
                             2. Transforming "raw" traces into **structured traces**
-
 
                             <br>
                             <i class="fa fa-info-circle"></i> _HTTP requests
@@ -167,10 +174,10 @@
                             * `a`<sub>`i`</sub> is the HTTP verb used to perform the request in `req`<sub>`i`</sub>,
                             * `p` is the parameter set `{URI, request, response}`,
                             * `θ`<sub>`i`</sub> is a valuation `p → D`<sub>`p`</sub> which assigns a value to each
-                            variables of `p`. `θ` is deduced from the values extracted from `req`<sub>`i`</sub> and `resp`<sub>`i`</sub>.
+                                variables of `p`. `θ` is deduced from the values extracted from `req`<sub>`i`</sub> and `resp`<sub>`i`</sub>.
 
                             <p class="left">
-                                The resulting trace set derived from raw traces is denoted `ST`.
+                                The **resulting trace set** derived from raw traces is denoted `ST`.
                             </p>
                         </script>
                     </section>
@@ -194,7 +201,7 @@
                 <section>
                     <section data-markdown>
                         <script type="text/template">
-                            ## Layer 2: Transformation Of The Traces Into IOSTSs
+                            ## Layer 2: IOSTS Transformation
                             <br>
 
                             1. Translating a structured trace set `ST` into a run set `SR`
@@ -202,8 +209,8 @@
 
                             <br>
                             Based on <code>&delta;1</code>, it should be
-                            possible to generate a different model `M`, but we
-                            must preserve the following relation:
+                            possible to generate a different model `M`, but **we
+                            must preserve** the following relation:
 
                             `traces(M) = ST`
                         </script>
@@ -228,7 +235,7 @@
 
                             <br>
                             Each layer takes an **IOSTS given by the direct lower one**.
-                            It represents the current **base of facts**.
+                            <br>It represents the current **base of facts**.
                         </script>
                     </section>
                     <section data-markdown>
@@ -334,11 +341,21 @@
                 <section>
                     <section data-markdown>
                         <script type="text/template">
+                            ## Current Status
+                            <br>
+
+                            Working on an implementation for Michelin's industrial systems.
+                        </script>
+                    </section>
+                </section>
+
+                <section>
+                    <section data-markdown>
+                        <script type="text/template">
                             ## Future Work
                             <br>
 
-                            * Applying such a framework on industrial systems (WIP)
-                            * Generating test cases for regression testing
+                            Generating test cases for regression testing.
                         </script>
                     </section>
                 </section>
