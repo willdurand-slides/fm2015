@@ -30,7 +30,7 @@
             <div class="slides">
                 <section>
                     <h1 class="title">Inferring Models With<br>Rule-Based Expert Systems</h1>
-                    <em class="subtitle">Sébastien Salva, <u>William Durand</u> &mdash; December 5, 2014 / SoICT'14</em>
+                    <em class="subtitle"><u>William Durand</u>, Sébastien Salva &mdash; December 5, 2014 / SoICT'14</em>
 
                     <p class="sponsors">
                         <img src="images/limos.png" class="no-border" />
@@ -64,14 +64,14 @@
                     <section data-markdown>
                         <script type="text/template">
                             A first classic solution to express these
-                            behaviours is to **model** them, e.g.  **I**nput
+                            behaviours is to **model** them, e.g. with **I**nput
                             **O**utput **S**ymbolic **T**ransition **S**ystems.
 
                             <br>
                             <p class="fragment">But writing such models is an **heavy task** and **error prone**.</p>
                             <br>
                             <p class="fragment">
-                                <em><i class="fa fa-arrow-right"></i> Not suitable for Michelin engineers.</em>
+                                <em><i class="fa fa-arrow-right"></i>Not suitable for Michelin applications.</em>
                             </p>
                         </script>
                     </section>
@@ -81,7 +81,7 @@
 
                             <br>
                             <p class="fragment">
-                                <em><i class="fa fa-arrow-right"></i> If we cannot write such models, let's build them.</em>
+                                <em><i class="fa fa-arrow-right"></i> If models don't exist (or are too<br>complicated to write), let's build them!</em>
                             </p>
                         </script>
                     </section>
@@ -100,8 +100,8 @@
                     </section>
                     <section data-markdown>
                         <script type="text/template">
-                            A (human) **domain expert** can deduce the meaning of
-                            an application execution by reading its traces.
+                            A (human) **domain expert** can deduce the meaning
+                            of an application execution by reading its traces.
 
                             <p class="fragment">
                                 <br>
@@ -137,10 +137,21 @@
                             <br>
 
                             * A rule can only be applied a limited number of times on the same knowledge base
-                            * The inference rules are Modus Ponens
-                            * No implicit knowledge elimination
+                            * The inference rules are Modus Ponens (soundness)
+                            * Facts are Horn clauses
+
+                            <br>
+                            Modus Ponens + Horn clauses <i class="fa fa-long-arrow-right"></i> completeness
                         </script>
                     </section>
+                </section>
+
+                <section data-markdown>
+                    <script type="text/template">
+                        ## Proof Of Concept
+
+                        Working with Web Applications
+                    </script>
                 </section>
 
                 <section>
@@ -205,19 +216,20 @@
                             <br>
 
                             1. Translating a structured trace set `ST` into a run set `SR`
-                            2. Deriving a first IOSTS <code>&delta;1</code> from `SR`
+                            2. Deriving a first IOSTS tree <code>&delta;1</code> from `SR`
 
                             <br>
-                            Based on <code>&delta;1</code>, it should be
-                            possible to generate a different model `M`, but **we
-                            must preserve** the following relation:
+                            <br>
+                            <i class="fa fa-exclamation-triangle"></i> The model is **not** extrapolated:
 
-                            `traces(M) = ST`
+                            `traces(δ1) = ST`
                         </script>
                     </section>
                     <section>
                         <h2>Example</h2>
-                        <img src="images/gh-2-1.png" class="no-border"/>
+                        <p>
+                            <img src="images/gh-2-1.png" class="no-border"/>
+                        </p>
                     </section>
                 </section>
 
@@ -262,9 +274,10 @@
                     <section data-markdown>
                         <script type="text/template">
                             ## Layer 3 - Example
-                            <br>
 
-                            <img src="images/gh-2-2.png" class="no-border" />
+                            <p>
+                                <img src="images/gh-2-2.png" class="no-border" />
+                            </p>
                         </script>
                     </section>
                     <section data-markdown>
@@ -297,17 +310,19 @@
                     <section data-markdown>
                         <script type="text/template">
                             ## Layer 4 - Example
-                            <br>
 
-                            <img src="images/gh-2-3.png" class="no-border" />
+                            <p>
+                                <img src="images/gh-2-3.png" class="no-border" />
+                            </p>
                         </script>
                     </section>
                     <section data-markdown>
                         <script type="text/template">
                             ## Need More?
-                            <br>
 
-                            <img src="images/gh-2-4.png" class="no-border" />
+                            <p>
+                                <img src="images/gh-2-4.png" class="no-border" />
+                            </p>
                         </script>
                     </section>
                 </section>
@@ -324,7 +339,7 @@
                             <br>
 
                             * Writing (and maintaining) rules is harder than expected
-                            * Preserving `traces(M) = ST` is not easy
+                            * Preserving `traces(M) = ST` leads to rather large models
                         </script>
                     </section>
                     <section data-markdown>
