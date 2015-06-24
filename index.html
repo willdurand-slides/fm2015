@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
 
-        <title>Inferring models with rule-based expert systems | William Durand</title>
+        <title>Autofunk: an Inference-Based Formal Model Generation Framework for Production Systems | William Durand</title>
 
         <link rel="stylesheet" href="reveal.js/css/reveal.min.css">
         <link rel="stylesheet" href="reveal.js/css/theme/simple.css" id="theme">
@@ -28,15 +28,9 @@
     <body>
         <div class="reveal">
             <div class="slides">
-                <section>
-                    <h1 class="title">Inferring Models With<br>Rule-Based Expert Systems</h1>
-                    <em class="subtitle"><u>William Durand</u>, Sébastien Salva &mdash; December 5, 2014 / SoICT'14</em>
-
-                    <p class="sponsors">
-                        <img src="images/limos.png" class="no-border" />
-                        <img src="images/blaisepascal.png" class="no-border" />
-                        <img src="images/michelin.jpg" class="no-border" />
-                    </p>
+                <section data-background="images/title-bg.jpg">
+                    <h1 class="title">Autofunk: an Inference-Based Formal Model Generation<br>Framework for [Michelin] Production Systems.</h1>
+                    <em class="subtitle"><u>William Durand</u>, Sébastien Salva &mdash; June 25, 2015 / FM'15</em>
                 </section>
 
                 <section data-background="images/chaine-des-puys.jpg"></section>
@@ -44,11 +38,71 @@
                 <section>
                     <section data-markdown>
                         <script type="text/template">
-                            ## Background @ Michelin
+                            ## Quick Tour @ Michelin
                         </script>
                     </section>
                     <section data-markdown>
                         <script type="text/template">
+                            A **factory** is divided into several **workshops**,
+                            <br>
+                            one for each step of the manufacturing process.
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            A **production system** is composed of devices, production
+                            machines, and one or more software to control them.
+
+                            <br>
+                            <i class="fa fa-info-circle"></i> In our case, we target a single workshop only.
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            Software exchange _information_ with points and machines
+                            by sending and receiving **production messages**.
+
+                            <br>
+
+                            ```
+                            17-Jun-2015 23:29:59.50|17011|MSG_IN  [pid: 1] [nsec: 8] [point: 1] ...
+
+                            17-Jun-2015 23:29:59.61|17021|MSG_OUT [pid: 1] [nsec: 8] [point: 3] ...
+
+                            17-Jun-2015 23:29:59.70|17011|MSG_IN  [pid: 2] [nsec: 8] [point: 2] ...
+                            ```
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            **Production messages** are exchanged in a binary
+                            format (custom protocols), through **centralized**
+                            messaging systems.
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            Each production message is tied to a **product** (e.g. tire),<br>identified
+                            by a **product identifier** (`pid`).
+
+                            <br>
+                            Gathering all production messages related to a product<br>allows
+                            to retrieve **what happened** to it.
+                        </script>
+                    </section>
+                </section>
+
+                <section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            ## Background
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            ### Developement Teams POV
+                            <br>
+
                             * 100+ applications running in **production**
                             * Not (fully) covered by tests
                             * Documentation most likely outdated
@@ -57,272 +111,116 @@
                     </section>
                     <section data-markdown>
                         <script type="text/template">
-                            The only way to **ensure stability** while fixing a
-                            bug<br>is to **learn how the application behaves**.
+                            ### Customers (Factories) POV
+                            <br>
+
+                            * Stability over anything else
+                            * Maintenance periods are planned,<br>but rather long (> 1 week)
+                            * 1h (unexpected) downtime = 50k &dollar;
                         </script>
                     </section>
                     <section data-markdown>
                         <script type="text/template">
-                            A first classic solution to express these
-                            behaviours is to **model** them, e.g. with **I**nput
-                            **O**utput **S**ymbolic **T**ransition **S**ystems.
-
-                            <br>
-                            <p class="fragment">But writing such models is an **heavy task** and **error prone**.</p>
-                            <br>
-                            <p class="fragment">
-                                <em><i class="fa fa-arrow-right"></i>Not suitable for Michelin applications.</em>
-                            </p>
+                            **Testing** such production systems is **complex**,<br>
+                            and takes a lot of time as it implies the physical<br>
+                            devices, and there are **numerous behaviours**.
                         </script>
                     </section>
                     <section data-markdown>
                         <script type="text/template">
-                            Hence the need for a **model inference approach**.
+                            These behaviours could be formally described into a model.
+                            <br>But writing such models is an **heavy task** and **error prone**.
 
                             <br>
-                            <p class="fragment">
-                                <em><i class="fa fa-arrow-right"></i> If models don't exist (or are too<br>complicated to write), let's build them!</em>
-                            </p>
+                            <i class="fa fa-info-circle"></i> Not suitable for Michelin applications.
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            ### Our Approach
+                            <br>
+
+                            By leveraging the information found in the
+                            production messages, we build **formal and exact
+                            models** (STS) that describe functional behaviours
+                            of a production system under analysis.
                         </script>
                     </section>
                 </section>
 
                 <section>
-                    <section>
-                        <h2>Model Inference</h2>
-                    </section>
-                    <section data-markdown>
+                    <section data-markdown class="no-border">
                         <script type="text/template">
-                            **Inference** is the act or **process of reaching a
-                            conclusion**<br>about something from **known facts**
-                            or evidence.
-                        </script>
-                    </section>
-                    <section data-markdown>
-                        <script type="text/template">
-                            A (human) **domain expert** can deduce the meaning
-                            of an application execution by reading its traces.
+                            ## The Big Picture
 
-                            <p class="fragment">
-                                <br>
-                                <i class="fa fa-lightbulb-o"></i> What about doing the same, **programmatically**?
-                            </p>
+                            ![](images/autofunk_branded.png)
                         </script>
                     </section>
-                    <section data-markdown>
-                        <script type="text/template">
-                            An **expert system** is a computer system
-                            that<br>**emulates the decision-making ability of a
-                            human expert**.
-                        </script>
-                    </section>
-                </section>
-
-                <section>
                     <section>
-                        <h2>Model Inference Framework</h2>
+                        <h3>Autofunk In Depth</h3>
                         <p>
-                            <img src="images/framework.png" class="no-border" />
-                        </p>
-                    </section>
-                    <section>
-                        <h2>Model Generator Layers</h2>
-                        <p>
-                            <img src="images/se.png" class="no-border" />
+                            <img src="images/autofunk.png" class="no-border" />
                         </p>
                     </section>
                     <section data-markdown>
                         <script type="text/template">
-                            ## Hypotheses On The Rules
+                            ### Autofunk
                             <br>
 
-                            * A rule can only be applied a limited number of times on the same knowledge base
-                            * The inference rules are Modus Ponens (soundness)
-                            * Facts are Horn clauses
-
-                            <br>
-                            Modus Ponens + Horn clauses <i class="fa fa-long-arrow-right"></i> completeness
+                            * Combines different fields: model inference,
+                            <br>expert systems, and (now) machine learning
+                            * Written in Java 8, reusing powerful
+                            libraries<br>(e.g. [Spark](https://spark.apache.org), [Drools](http://www.drools.org/))
+                            * More a **P**roof **o**f **C**oncept than a production-<br>ready tool
+                            * To be open sourced (no ETA yet)
                         </script>
                     </section>
-                </section>
+                    <section data-markdown class="no-border centered-table">
+                        <script type="text/template">
+                            ### Experimentation
+                            <br>
 
-                <section data-markdown>
-                    <script type="text/template">
-                        ## Proof Of Concept
+                            10 million production messages (20 days)
 
-                        Working with Web Applications
-                    </script>
-                </section>
+                            <i class="fa fa-arrow-down"></i>
+
+                            161,035 different traces
+
+                            <i class="fa fa-arrow-down"></i>
+
+                            | `S`       | `R(S)`     |
+                            |-----------------|----------------|
+                            | 77,058 branches | 1,587 branches |
+                            | 43,536 branches | 1,585 branches |
+
+                            <br>
+                            <i class="fa fa-info-circle"></i> 2 entry points here
+
+                            It took 5 minutes to build the two models.
+                        </script>
+                    </section>
+               </section>
 
                 <section>
                     <section data-markdown>
                         <script type="text/template">
-                            ## Layer 1: Trace Filtering
-                            <br>
-
-                            1. Cleaning-up the trace set given as input, removing **noise**
-                            2. Transforming "raw" traces into **structured traces**
-
-                            <br>
-                            <i class="fa fa-info-circle"></i> _HTTP requests
-                            and responses related to assets<br>(CSS files,
-                            JavaScript files, images) are meaningless._
+                            ## Work In Progress
                         </script>
                     </section>
-                    <section data-markdown>
+                    <section data-markdown class="no-border">
                         <script type="text/template">
-                            ## Structured HTTP Traces
+                            ### Offline Passive Testing
                             <br>
 
-                            <p class="left">
-                                Let&nbsp;&nbsp;`t = req`<sub>`1`</sub>`, resp`<sub>`1`</sub>`, ..., req`<sub>`n`</sub>`, resp`<sub>`n`</sub>&nbsp;&nbsp;
-                                be a raw HTTP trace composed of an alternate sequence of HTTP
-                                request `req`<sub>`i`</sub> and HTTP response `resp`<sub>`i`</sub>.
-                                The structured HTTP trace `σ` of `t` is the sequence
-                                `(a`<sub>`1`</sub>`(p), θ`<sub>`1`</sub>`)...(a`<sub>`n`</sub>`(p), θ`<sub>`n`</sub>`)` where:
-                            </p>
-
-                            * `a`<sub>`i`</sub> is the HTTP verb used to perform the request in `req`<sub>`i`</sub>,
-                            * `p` is the parameter set `{URI, request, response}`,
-                            * `θ`<sub>`i`</sub> is a valuation `p → D`<sub>`p`</sub> which assigns a value to each
-                                variables of `p`. `θ` is deduced from the values extracted from `req`<sub>`i`</sub> and `resp`<sub>`i`</sub>.
-
-                            <p class="left">
-                                The **resulting trace set** derived from raw traces is denoted `ST`.
-                            </p>
-                        </script>
-                    </section>
-                    <section data-markdown>
-                        <script type="text/template">
-                            ## Example
-                            <br>
-
-                                GET("https://github.com/", req0, resp0)
-                                GET("https://github.com/login", ...)
-                                POST("https://github.com/session", ...)
-                                GET("https://github.com/", ...)
-                                GET("https://github.com/willdurand", ...)
-                                GET("https://github.com/willdurand/Geocoder", ...)
-                                POST("https://github.com/logout", ...)
-                                GET("https://github.com/", ...)
-                        </script>
-                    </section>
-                </section>
-
-                <section>
-                    <section data-markdown>
-                        <script type="text/template">
-                            ## Layer 2: IOSTS Transformation
-                            <br>
-
-                            1. Translating a structured trace set `ST` into a run set `SR`
-                            2. Deriving a first IOSTS tree <code>&delta;1</code> from `SR`
+                            * Inferred models are used as specifications
+                            * Another set of traces is collected on a system<br>under test `SUT` (new or upgraded)
 
                             <br>
+                            <i class="fa fa-arrow-down"></i>
                             <br>
-                            <i class="fa fa-exclamation-triangle"></i> The model is **not** extrapolated:
-
-                            `traces(δ1) = ST`
-                        </script>
-                    </section>
-                    <section>
-                        <h2>Example</h2>
-                        <p>
-                            <img src="images/gh-2-1.png" class="no-border"/>
-                        </p>
-                    </section>
-                </section>
-
-                <section>
-                    <section data-markdown>
-                        <script type="text/template">
-                            ## Layers 3-N: IOSTS Abstraction
                             <br>
 
-                            Composed of rules that emulate the ability of a
-                            human expert<br>to **simplify transitions**, to **analyze
-                            transition syntax** in order<br>to deduce more
-                            meaningful information related to the<br>targeted
-                            application, and to **construct more abstract models**.
-
-                            <br>
-                            Each layer takes an **IOSTS given by the direct lower one**.
-                            <br>It represents the current **base of facts**.
-                        </script>
-                    </section>
-                    <section data-markdown>
-                        <script type="text/template">
-                            ## Layer 3
-                            <br>
-
-                            Layer 3 contains **low level**, **generic rules**
-                            that<br>can be reused against different applications.
-
-                            <br>
-
-                                rule "Identify Login Page"
-                                when
-                                    $t: Transition(
-                                        Action == GET,
-                                        Guard.response.content contains('login-form')
-                                    )
-                                then
-                                    modify ($t) { Assign.add("isLoginPage := true") }
-                                end
-                        </script>
-                    </section>
-                    <section data-markdown>
-                        <script type="text/template">
-                            ## Layer 3 - Example
-
-                            <p>
-                                <img src="images/gh-2-2.png" class="no-border" />
-                            </p>
-                        </script>
-                    </section>
-                    <section data-markdown>
-                        <script type="text/template">
-                            ## Layer 4
-                            <br>
-
-                            Layer 4 allows to infer a more abstract
-                            model<br>composed of **more expressive actions**.
-
-                            <br>
-
-                                rule "Identify Authentication"
-                                when
-                                    $t1: Transition(Action == GET, Assign contains "isLoginPage:= true",
-                                                    $t1final := Lfinal)
-                                    $t2: Transition(Action == PostRedirection, Linit == $t1lfinal,
-                                                    $t2linit := Linit)
-                                    not  Transition(Linit == $t2linit)
-                                then
-                                    insert(new Transition("Authentication",
-                                        Guard($t1.Guard,$t2.Guard), Assign($t1.Assign, $t2.Assign),
-                                        $t1.Linit, $t2.Lfinal
-                                    ))
-                                    retract($t1)
-                                    retract($t2)
-                                end
-                        </script>
-                    </section>
-                    <section data-markdown>
-                        <script type="text/template">
-                            ## Layer 4 - Example
-
-                            <p>
-                                <img src="images/gh-2-3.png" class="no-border" />
-                            </p>
-                        </script>
-                    </section>
-                    <section data-markdown>
-                        <script type="text/template">
-                            ## Need More?
-
-                            <p>
-                                <img src="images/gh-2-4.png" class="no-border" />
-                            </p>
+                            **Does `SUT` conforms to the specifications?**
                         </script>
                     </section>
                 </section>
@@ -331,35 +229,11 @@
                     <section data-markdown>
                         <script type="text/template">
                             ## Conclusion
-                        </script>
-                    </section>
-                    <section data-markdown>
-                        <script type="text/template">
-                            ## Cons
                             <br>
 
-                            * Writing (and maintaining) rules is harder than expected
-                            * Preserving `traces(M) = ST` leads to rather large models
-                        </script>
-                    </section>
-                    <section data-markdown>
-                        <script type="text/template">
-                            ## Pros
-                            <br>
-
-                            * Original approach to derive IOSTS models
-                            * It Works™
-                        </script>
-                    </section>
-                </section>
-
-                <section>
-                    <section data-markdown>
-                        <script type="text/template">
-                            ## Current Status
-                            <br>
-
-                            Working on an implementation for Michelin's industrial systems.
+                            * **Fast** and **efficient** technique to infer formal models
+                            * The more production messages, the better!
+                            * But a few technical issues to tackle (memory<br>consumption for instance)
                         </script>
                     </section>
                 </section>
@@ -369,15 +243,23 @@
                         ## Future Work
                         <br>
 
-                        Generating test cases for regression testing.
+                        * Deploying Autofunk as a real solution (WIP)
+                        * Offline passive testing (WIP)
+                        * Online passive testing
                     </script>
                 </section>
 
-                <section data-markdown data-background="images/bib-in-hanoi.jpg" class="thanks">
+                <section data-markdown>
                     <script type="text/template">
                         ## Thank You.
 
                         ### Questions?
+
+                        <p class="sponsors">
+                            <img src="images/blaisepascal.png" class="no-border" />
+                            <img src="images/limos.png" class="no-border" />
+                            <img src="images/michelin.jpg" class="no-border" />
+                        </p>
                     </script>
                 </section>
             </div>

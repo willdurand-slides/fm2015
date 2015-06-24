@@ -1,7 +1,10 @@
 h1.title {
-    margin-top: 10%;
-    font-size: 2.4em;
-    line-height: 1.3em;
+    font-size: 2em;
+    text-shadow: 1px 1px 1px grey;
+}
+
+.subtitle {
+    font-size: 0.9em!important;
 }
 
 p.left {
@@ -49,9 +52,13 @@ img.no-border,
     list-style-type: none;
 }
 
-.thanks h2,
-.thanks h3 {
-    font-weight: bold !important;
-    color: #fff !important;
-    text-shadow: 4px 4px 2px #000;
+.centered-table table {
+    width: 100%;
+}
+
+.centered-table table tr,
+.centered-table table th,
+.centered-table table td {
+    border: 1px solid #000;
+    padding: 5px;
 }
